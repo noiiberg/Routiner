@@ -7,6 +7,12 @@
 
 import SwiftUI
 
+struct TaskRow: View {
+    var body: some View {
+        ContentView()
+    }
+}
+
 struct ContentView: View {
     
     @State private var showingAddItem = false
@@ -16,8 +22,12 @@ struct ContentView: View {
         VStack {
             NavigationStack {
                 
+                
+                // chart
                 Spacer()
                     .padding()
+                
+                
                 
                 Button {
                     self.showingAddItem = true
@@ -30,7 +40,7 @@ struct ContentView: View {
                 })
                 .buttonStyle(.bordered)
                 List {
-                    ForEach(routineItem.items) { item in
+                    ForEach(routineItem.items.reversed(), id: \.id) { item in
                         HStack {
                             VStack(alignment: .leading) {
                                 Text(item.name)
