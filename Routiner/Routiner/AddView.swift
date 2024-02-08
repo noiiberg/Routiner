@@ -15,9 +15,9 @@ struct AddView: View {
     @Environment(\.dismiss) var dismiss
     
     @State private var name = String()
-    @State private var type = "Not Done"
+    @State private var type = "Note Done"
     
-    var types = ["Done", "Not Done"]
+    var types = ["Note Done", "Done"]
     
 
     var body: some View {
