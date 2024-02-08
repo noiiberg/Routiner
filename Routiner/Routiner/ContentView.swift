@@ -29,7 +29,10 @@ struct ContentView: View {
                 
                 
                 
-                // chart title
+                
+                Text("Completed in a day")
+                    .font(.system(size: 20))
+                    .padding()
                 
                 Button {
                     self.showingAddItem = true
