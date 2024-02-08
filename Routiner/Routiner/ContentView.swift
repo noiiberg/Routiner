@@ -29,6 +29,8 @@ struct ContentView: View {
                 
                 
                 
+                // chart title
+                
                 Button {
                     self.showingAddItem = true
                 } label: {
