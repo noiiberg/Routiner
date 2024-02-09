@@ -12,13 +12,11 @@ struct Items: Identifiable, Codable {
     var id = UUID()
     
     let name: String
-    var type: String
+    var status: String
 }
 
 
 class Item: ObservableObject {
-    
-    
     @Published var items = [Items]() {
         didSet {
             let encoder = JSONEncoder()

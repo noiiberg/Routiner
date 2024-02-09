@@ -15,9 +15,9 @@ struct AddView: View {
     @Environment(\.dismiss) var dismiss
     
     @State private var name = String()
-    @State private var type = "Note Done"
+    @State private var status = "Note Done"
     
-    var types = ["Note Done", "Done"]
+    var statuses = ["Note Done", "Done"]
     
 
     var body: some View {
@@ -25,8 +25,8 @@ struct AddView: View {
             NavigationStack {
                 Form {
                     TextField("Name", text: $name)
-                    Picker(selection: $type) {
-                        ForEach(self.types, id: \.self) {
+                    Picker(selection: $status) {
+                        ForEach(self.statuses, id: \.self) {
                             Text($0)
                         }
                     } label: {
@@ -36,7 +36,7 @@ struct AddView: View {
                 .navigationTitle("Add a routine")
                 .toolbar(content: {
                     Button(action: {
-                            let item = Items(name: self.name, type: self.type)
+                            let item = Items(name: self.name, status: self.status)
                             self.routine.items.append(item)
                             self.dismiss.callAsFunction()
                             

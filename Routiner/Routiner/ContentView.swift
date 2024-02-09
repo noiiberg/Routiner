@@ -11,7 +11,6 @@ import Charts
 struct ContentView: View {
     
     @State private var showingAddItem = false
-    @State private var reverseStatus = false
     @ObservedObject var routineItem = Item()
     
     let colors = Gradient(colors: [.blue, .purple, .blue])
@@ -30,14 +29,14 @@ struct ContentView: View {
                         .stroke(style: StrokeStyle(lineWidth: 22, lineCap: .round, lineJoin: .round))
                         .foregroundColor(Color.gray.opacity(0.3))
                     
-                    let doneItemsCount = routineItem.items.filter { $0.type == "Done" }.count
+                    let doneItemsCount = routineItem.items.filter { $0.status == "Done" }.count
                     let totalItemsCount = routineItem.items.count
                     let completionPercentage = doneItemsCount > 0 ? Double(doneItemsCount) / Double(totalItemsCount) : 0
                     
                     Circle()
                         .trim(from: 0, to: CGFloat(completionPercentage))
                         .stroke(AngularGradient(gradient: colors, center: .center,
-                                startAngle: .degrees(0), endAngle: .degrees(360)),
+                                                startAngle: .degrees(0), endAngle: .degrees(360)),
                                 style: StrokeStyle(lineWidth: 22, lineCap: .round, lineJoin: .round))
                         .rotationEffect(Angle(degrees: 90))
                     
@@ -63,8 +62,8 @@ struct ContentView: View {
                 .sheet(isPresented: $showingAddItem, content: {
                     AddView(routine: self.routineItem)
                 })
-                .buttonStyle(.bordered)
                 
+                .buttonStyle(.bordered)
                 .padding()
                 
                 List {
@@ -74,29 +73,27 @@ struct ContentView: View {
                             VStack(alignment: .leading) {
                                 Text(item.name)
                                     .font(.headline)
-                                Text(item.type)
+                                Text(item.status)
                             }
                             Spacer()
                             
-                            if let (icon, color) = iconMappings[item.type] {
+                            if let (icon, color) = iconMappings[item.status] {
                                 Button {
-                                    //
+                                    // The button has no action yet
                                 } label: {
                                     icon.imageScale(.large)
                                         .foregroundStyle(color)
-//                                        .symbolEffect(.pulse)
                                 }
                                 .contextMenu(menuItems: {
                                     Button {
-                                        routineItem.items[index].type = (item.type == "Done") ? "Note Done" : "Done"
+                                        routineItem.items[index].status = (item.status == "Done") ? "Note Done" : "Done"
                                     } label: {
-                                        Text("Change values")
+                                        Text("Change status")
                                         Image(systemName: "arrow.counterclockwise.circle.fill")
                                             .foregroundStyle(Color.gray)
-                                            
-                                   
+                                        
                                     }
-
+                                    
                                     
                                 })
                                 
@@ -109,22 +106,16 @@ struct ContentView: View {
                         routineItem.items.remove(atOffsets: indexSet)
                     })
                 }
-                
-                // Background List color?
-//                .listStyle(InsetGroupedListStyle())
-//                .backgroundStyle(Color.white)
                 .navigationTitle("My routine")
                 
             }
         }
-//        .backgroundStyle(Color.white)
     }
+    
     
 }
 
-    
-    
-    
+
     
     
     
