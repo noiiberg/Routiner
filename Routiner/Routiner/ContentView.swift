@@ -6,32 +6,52 @@
 //
 
 import SwiftUI
+import Charts
 
 struct ContentView: View {
     
     @State private var showingAddItem = false
+    @State private var reverseStatus = false
     @ObservedObject var routineItem = Item()
     
+    let colors = Gradient(colors: [.blue, .purple, .blue])
     let iconMappings: [String: (Image, Color)] = ["Note Done": (Image(systemName: "seal"), Color.gray),
                                                   "Done": (Image(systemName: "checkmark.seal.fill"), Color.green)]
-    
-    
-    let imageSeal = Image(systemName: "seal")
     
     var body: some View {
         VStack {
             NavigationStack {
                 
-                
-                // chart
                 Spacer()
-                    .padding()
                 
+                ZStack {
+                    Circle()
+                        .trim(from: 0, to: 1)
+                        .stroke(style: StrokeStyle(lineWidth: 22, lineCap: .round, lineJoin: .round))
+                        .foregroundColor(Color.gray.opacity(0.3))
+                    
+                    let doneItemsCount = routineItem.items.filter { $0.type == "Done" }.count
+                    let totalItemsCount = routineItem.items.count
+                    let completionPercentage = doneItemsCount > 0 ? Double(doneItemsCount) / Double(totalItemsCount) : 0
+                    
+                    Circle()
+                        .trim(from: 0, to: CGFloat(completionPercentage))
+                        .stroke(AngularGradient(gradient: colors, center: .center,
+                                startAngle: .degrees(0), endAngle: .degrees(360)),
+                                style: StrokeStyle(lineWidth: 22, lineCap: .round, lineJoin: .round))
+                        .rotationEffect(Angle(degrees: 90))
+                    
+                    Text("\(Int(completionPercentage * 100))%")
+                        .font(.system(size: 48, weight: .bold, design: .rounded))
+                }
                 
+                .frame(width: 180, height: 180)
+                .padding()
                 
+                Spacer()
                 
                 Text("Completed in a day")
-                    .font(.system(size: 20))
+                    .font(.system(size: 20, weight: .medium, design: .rounded))
                     .padding()
                 
                 Button {
@@ -48,7 +68,8 @@ struct ContentView: View {
                 .padding()
                 
                 List {
-                    ForEach(routineItem.items) { item in
+                    ForEach(routineItem.items.indices, id: \.self) { index in
+                        let item = routineItem.items[index]
                         HStack {
                             VStack(alignment: .leading) {
                                 Text(item.name)
@@ -58,15 +79,28 @@ struct ContentView: View {
                             Spacer()
                             
                             if let (icon, color) = iconMappings[item.type] {
-                                           Button {
-                                               //
-                                           } label: {
-                                               icon.foregroundStyle(color)
-                                           }
-                                           .contextMenu(menuItems: {
-                                               Text("Reverse status")
-                                           })
-                                       }
+                                Button {
+                                    //
+                                } label: {
+                                    icon.imageScale(.large)
+                                        .foregroundStyle(color)
+//                                        .symbolEffect(.pulse)
+                                }
+                                .contextMenu(menuItems: {
+                                    Button {
+                                        routineItem.items[index].type = (item.type == "Done") ? "Note Done" : "Done"
+                                    } label: {
+                                        Text("Change values")
+                                        Image(systemName: "arrow.counterclockwise.circle.fill")
+                                            .foregroundStyle(Color.gray)
+                                            
+                                   
+                                    }
+
+                                    
+                                })
+                                
+                            }
                             
                         }
                     }
@@ -79,7 +113,7 @@ struct ContentView: View {
                 // Background List color?
 //                .listStyle(InsetGroupedListStyle())
 //                .backgroundStyle(Color.white)
-                .navigationTitle("Your routine")
+                .navigationTitle("My routine")
                 
             }
         }
