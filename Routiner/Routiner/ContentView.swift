@@ -12,7 +12,6 @@ struct ContentView: View {
     
     @State private var showingAddItem = false
     @ObservedObject var routineItem = Item()
-    
     let colors = Gradient(colors: [.blue, .purple, .blue])
     let iconMappings: [String: (Image, Color)] = ["Not Done": (Image(systemName: "seal"), Color.gray),
                                                   "Done": (Image(systemName: "checkmark.seal.fill"), Color.green)]
@@ -79,7 +78,6 @@ struct ContentView: View {
                             
                             if let (icon, color) = iconMappings[item.status] {
                                 Button {
-                                    // The button has no action yet
                                 } label: {
                                     icon.imageScale(.large)
                                         .foregroundStyle(color)
@@ -91,45 +89,22 @@ struct ContentView: View {
                                         Text("Change status")
                                         Image(systemName: "arrow.counterclockwise.circle.fill")
                                             .foregroundStyle(Color.gray)
-                                        
                                     }
-                                    
-                                    
                                 })
-                                
                             }
-                            
                         }
                     }
-                    
                     .onDelete(perform: { indexSet in
                         routineItem.items.remove(atOffsets: indexSet)
                     })
                 }
                 .navigationTitle("My routine")
-                
             }
         }
     }
-    
-    
 }
 
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
 #Preview {
     ContentView()

@@ -9,17 +9,13 @@ import SwiftUI
 
 struct AddView: View {
     
+    var statuses = ["Not Done", "Done"]
+    
     @ObservedObject var routine: Item
-    
-    // Closing Sheet
-    @Environment(\.dismiss) var dismiss
-    
+    @Environment(\.dismiss) var dismiss // Closing Sheet
     @State private var name = String()
     @State private var status = "Not Done"
     @FocusState private var isFocusedField: Bool
-    
-    var statuses = ["Not Done", "Done"]
-    
 
     var body: some View {
         VStack {
@@ -47,7 +43,6 @@ struct AddView: View {
                             let item = Items(name: self.name, status: self.status)
                             self.routine.items.append(item)
                             self.dismiss.callAsFunction()
-                            
                     }, label: {
                         Text("Create")
                     })
