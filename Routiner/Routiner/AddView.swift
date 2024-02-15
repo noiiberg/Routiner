@@ -9,24 +9,27 @@ import SwiftUI
 
 struct AddView: View {
     
+    var statuses = ["Not Done", "Done"]
+    
     @ObservedObject var routine: Item
-    
-    // Closing Sheet
-    @Environment(\.dismiss) var dismiss
-    
+    @Environment(\.dismiss) var dismiss // Closing Sheet
     @State private var name = String()
-    @State private var type = "Not Done"
-    
-    var types = ["Done", "Not Done"]
-    
+    @State private var status = "Not Done"
+    @FocusState private var isFocusedField: Bool
 
     var body: some View {
         VStack {
             NavigationStack {
                 Form {
                     TextField("Name", text: $name)
-                    Picker(selection: $type) {
-                        ForEach(self.types, id: \.self) {
+                        .focused($isFocusedField)
+                        .onAppear {
+                            DispatchQueue.main.async {
+                                self.isFocusedField = true
+                            }
+                        }
+                    Picker(selection: $status) {
+                        ForEach(self.statuses, id: \.self) {
                             Text($0)
                         }
                     } label: {
@@ -36,10 +39,10 @@ struct AddView: View {
                 .navigationTitle("Add a routine")
                 .toolbar(content: {
                     Button(action: {
-                            let item = Items(name: self.name, type: self.type)
+                        guard name != "" else { return }
+                            let item = Items(name: self.name, status: self.status)
                             self.routine.items.append(item)
                             self.dismiss.callAsFunction()
-                            
                     }, label: {
                         Text("Create")
                     })
