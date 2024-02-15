@@ -14,7 +14,7 @@ struct ContentView: View {
     @ObservedObject var routineItem = Item()
     
     let colors = Gradient(colors: [.blue, .purple, .blue])
-    let iconMappings: [String: (Image, Color)] = ["Note Done": (Image(systemName: "seal"), Color.gray),
+    let iconMappings: [String: (Image, Color)] = ["Not Done": (Image(systemName: "seal"), Color.gray),
                                                   "Done": (Image(systemName: "checkmark.seal.fill"), Color.green)]
     
     var body: some View {
