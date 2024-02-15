@@ -16,7 +16,7 @@ struct AddView: View {
     
     @State private var name = String()
     @State private var status = "Not Done"
-    @State private var isFocused = false
+    @FocusState private var isFocusedField: Bool
     
     var statuses = ["Not Done", "Done"]
     
@@ -26,6 +26,12 @@ struct AddView: View {
             NavigationStack {
                 Form {
                     TextField("Name", text: $name)
+                        .focused($isFocusedField)
+                        .onAppear {
+                            DispatchQueue.main.async {
+                                self.isFocusedField = true
+                            }
+                        }
                     Picker(selection: $status) {
                         ForEach(self.statuses, id: \.self) {
                             Text($0)

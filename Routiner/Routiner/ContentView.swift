@@ -86,7 +86,7 @@ struct ContentView: View {
                                 }
                                 .contextMenu(menuItems: {
                                     Button {
-                                        routineItem.items[index].status = (item.status == "Done") ? "Note Done" : "Done"
+                                        routineItem.items[index].status = (item.status == "Done") ? "Not Done" : "Done"
                                     } label: {
                                         Text("Change status")
                                         Image(systemName: "arrow.counterclockwise.circle.fill")
