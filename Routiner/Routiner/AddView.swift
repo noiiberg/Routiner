@@ -43,6 +43,7 @@ struct AddView: View {
                 .navigationTitle("Add a routine")
                 .toolbar(content: {
                     Button(action: {
+                        guard name != "" else { return }
                             let item = Items(name: self.name, status: self.status)
                             self.routine.items.append(item)
                             self.dismiss.callAsFunction()
